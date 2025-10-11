@@ -1,0 +1,3 @@
+Praca w 2D Built-in Render Pipeline
+
+match na 0.5 i reference resolution
