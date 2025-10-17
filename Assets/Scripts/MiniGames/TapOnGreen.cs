@@ -21,7 +21,7 @@ public class TapOnGreen : MonoBehaviour
     private float effectiveWaitTime = 5f;
     private float minEffectiveTime = 1f;
     private float maxEffectiveTime = 1f;
-    private Coroutine gameplayeCoroutine;
+    private Coroutine gameplayCoroutine;
 
     void Start()
     {
@@ -29,8 +29,9 @@ public class TapOnGreen : MonoBehaviour
         maxEffectiveTime = (1f + waitTimeVariation) * baseWaitTime;
         effectiveWaitTime = Random.Range(minEffectiveTime, maxEffectiveTime) / gameSpeed;
         Debug.Log("Effective wait time for this round: " + effectiveWaitTime);
+        reactionTime = reactionTime / gameSpeed;
 
-        gameplayeCoroutine = StartCoroutine(Run());
+        gameplayCoroutine = StartCoroutine(Run());
     }
 
     void Update()
@@ -58,14 +59,14 @@ public class TapOnGreen : MonoBehaviour
             Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
-            StopCoroutine(gameplayeCoroutine);
+            StopCoroutine(gameplayCoroutine);
         }
         else if (state == State.ReactionTime)
         {
             Debug.Log("Wygrana!");
             text.SetText("Wygrana");
             state = State.Success;
-            StopCoroutine(gameplayeCoroutine);
+            StopCoroutine(gameplayCoroutine);
         }
     }
 
