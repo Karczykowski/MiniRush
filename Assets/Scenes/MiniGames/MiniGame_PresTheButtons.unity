@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 557387}
   - component: {fileID: 557388}
   m_Layer: 0
-  m_Name: HitTheDartController
+  m_Name: PressTheButtonsController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
