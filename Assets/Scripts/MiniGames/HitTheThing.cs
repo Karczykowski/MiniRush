@@ -8,20 +8,22 @@ public class HitTheThing : MonoBehaviour
     [SerializeField] private GameObject dartboardGameObject;
     [SerializeField] private TextMeshProUGUI text;
 
-    [SerializeField] private float gameTime = 5.0f;
+    [SerializeField] private float baseGameTime = 5.0f;
     [SerializeField] private float gameSpeed = 1.0f;
     [SerializeField] private float dartboardSpeed = 1250.0f;
 
     private enum State { Play, Success, Fail }
     private State state = State.Play;
-    private Vector2 area;
-    private Vector2 effectiveArea;
     private Vector2 direction;
 
     private float areaMinX, areaMaxX, areaMinY, areaMaxY;
+    private float effectiveWaitTime = 5f;
+    private Coroutine gameplayCoroutine;
 
     void Start()
     {
+        effectiveWaitTime = baseGameTime / gameSpeed;
+
         direction = Random.insideUnitCircle.normalized;
 
         float camHalfHeight = Camera.main.orthographicSize;
@@ -35,6 +37,8 @@ public class HitTheThing : MonoBehaviour
         areaMaxX = Camera.main.transform.position.x + camHalfWidth - dartboardHalfWidth;
         areaMinY = Camera.main.transform.position.y - camHalfHeight + dartboardHalfHeight;
         areaMaxY = Camera.main.transform.position.y + camHalfHeight - dartboardHalfHeight;
+
+        gameplayCoroutine = StartCoroutine(Run());
     }
 
     void Update()
@@ -92,12 +96,22 @@ public class HitTheThing : MonoBehaviour
             Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
+            StopCoroutine(gameplayCoroutine);
         }
         else if(hit.gameObject == dartboardGameObject)
         {
             Debug.Log("Wygrana!");
             text.SetText("Wygrana");
             state = State.Success;
+            StopCoroutine(gameplayCoroutine);
         }
+    }
+
+    private IEnumerator Run()
+    {
+        yield return new WaitForSeconds(effectiveWaitTime);
+        Debug.Log("Przegrana!");
+        text.SetText("Przegrana");
+        state = State.Fail;
     }
 }
