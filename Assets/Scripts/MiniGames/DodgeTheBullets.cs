@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class DodgeTheBullets : MonoBehaviour
 {
@@ -10,8 +11,9 @@ public class DodgeTheBullets : MonoBehaviour
     [SerializeField] private float baseGameTime = 10.0f;
     [SerializeField] private float gameSpeed = 1.0f;
     [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed = 5.0f;
-    [SerializeField] private float bulletSpawnDelay = 0.5f;
+    [SerializeField] private float baseBulletSpawnDelay = 0.5f;
     [SerializeField] private GameObject player;
 
     private enum State { Play, Success, Fail }
@@ -21,11 +23,16 @@ public class DodgeTheBullets : MonoBehaviour
     float camHalfHeight;
     float camHalfWidth;
     private float effectiveWaitTime = 5f;
+    private float effectiveBulletSpawnDelay = 0.5f;
     private Coroutine gameplayCoroutine;
+    private List<GameObject> bullets = new List<GameObject>();
 
     void Start()
     {
+        player.AddComponent<PlayerTrigger>().Init(this);
+
         effectiveWaitTime = baseGameTime / gameSpeed;
+        effectiveBulletSpawnDelay = baseBulletSpawnDelay / gameSpeed;
 
         camHalfHeight = Camera.main.orthographicSize;
         camHalfWidth = camHalfHeight * Camera.main.aspect;
@@ -59,6 +66,7 @@ public class DodgeTheBullets : MonoBehaviour
         Debug.Log("Wygrana!");
         text.SetText("Wygrana");
         state = State.Success;
+        DestroyAllBullets();
     }
 
     private void Movement()
@@ -80,14 +88,74 @@ public class DodgeTheBullets : MonoBehaviour
         while (state == State.Play)
         {
             SpawnBullet();
-            yield return new WaitForSeconds(bulletSpawnDelay);
+            yield return new WaitForSeconds(effectiveBulletSpawnDelay);
         }
     }
 
     private void SpawnBullet()
     {
-        float camHeight = camHalfHeight * 2f;
-        float camWidth = camHalfWidth * 2f;
-        Debug.Log("Spawned Bullet");
+        int side = Random.Range(0, 4);
+        Vector2 spawnPoint = Vector2.zero;
+        Vector2 direction = Vector2.zero;
+
+        if (side == 0)
+        {
+            spawnPoint = new Vector2(-camHalfWidth, Random.Range(-camHalfHeight, camHalfHeight));
+            direction = Vector2.right;
+        }
+        else if (side == 1)
+        {
+            spawnPoint = new Vector2(camHalfWidth, Random.Range(-camHalfHeight, camHalfHeight));
+            direction = Vector2.left;
+        }
+        else if (side == 2)
+        {
+            spawnPoint = new Vector2(Random.Range(-camHalfHeight, camHalfHeight), camHalfHeight);
+            direction = Vector2.down;
+        }
+        else if (side == 3)
+        {
+            spawnPoint = new Vector2(Random.Range(-camHalfHeight, camHalfHeight), -camHalfHeight);
+            direction = Vector2.up;
+        }
+
+        GameObject bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.identity);
+
+        bullet.GetComponent<Rigidbody2D>().gravityScale = 0;
+        bullet.GetComponent<Rigidbody2D>().linearVelocity = direction * bulletSpeed * gameSpeed;
+
+        bullets.Add(bullet);
+    }
+
+    private void DestroyAllBullets()
+    {
+        foreach (GameObject bullet in bullets)
+        {
+            Destroy(bullet);
+        }
+
+        bullets.Clear();
+    }
+
+    private class PlayerTrigger : MonoBehaviour
+    {
+        private DodgeTheBullets miniGame;
+
+        public void Init(DodgeTheBullets game)
+        {
+            miniGame = game;
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Bullet"))
+            {
+                Debug.Log("Przegrana!");
+                miniGame.text.SetText("Przegrana");
+                miniGame.state = State.Success;
+                miniGame.DestroyAllBullets();
+            }
+        }
     }
 }
+
