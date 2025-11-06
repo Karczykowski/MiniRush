@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 
-public class DodgeTheBullets : MonoBehaviour
+public class DodgeFallingObjects : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
 
@@ -72,13 +72,11 @@ public class DodgeTheBullets : MonoBehaviour
     private void Movement()
     {
         float moveX = Input.GetAxisRaw("Horizontal");
-        float moveY = Input.GetAxisRaw("Vertical");
 
         Vector3 position = player.transform.position;
-        position += new Vector3(moveX, moveY, 0f).normalized * playerSpeed * gameSpeed * Time.deltaTime;
+        position += new Vector3(moveX, 0f, 0f).normalized * playerSpeed * gameSpeed * Time.deltaTime;
 
         position.x = Mathf.Clamp(position.x, areaMinX, areaMaxX);
-        position.y = Mathf.Clamp(position.y, areaMinY, areaMaxY);
 
         player.transform.position = position;
     }
@@ -94,30 +92,8 @@ public class DodgeTheBullets : MonoBehaviour
 
     private void SpawnBullet()
     {
-        int side = Random.Range(0, 4);
-        Vector2 spawnPoint = Vector2.zero;
-        Vector2 direction = Vector2.zero;
-
-        if (side == 0)
-        {
-            spawnPoint = new Vector2(-camHalfWidth, Random.Range(-camHalfHeight, camHalfHeight));
-            direction = Vector2.right;
-        }
-        else if (side == 1)
-        {
-            spawnPoint = new Vector2(camHalfWidth, Random.Range(-camHalfHeight, camHalfHeight));
-            direction = Vector2.left;
-        }
-        else if (side == 2)
-        {
-            spawnPoint = new Vector2(Random.Range(-camHalfHeight * 2, camHalfHeight * 2), camHalfHeight);
-            direction = Vector2.down;
-        }
-        else if (side == 3)
-        {
-            spawnPoint = new Vector2(Random.Range(-camHalfHeight * 2, camHalfHeight * 2), -camHalfHeight);
-            direction = Vector2.up;
-        }
+        Vector2 spawnPoint = new Vector2(Random.Range(-camHalfHeight * 2, camHalfHeight * 2), camHalfHeight);
+        Vector2 direction = Vector2.down;
 
         GameObject bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.identity);
 
@@ -163,9 +139,9 @@ public class DodgeTheBullets : MonoBehaviour
 
     private class PlayerTrigger : MonoBehaviour
     {
-        private DodgeTheBullets miniGame;
+        private DodgeFallingObjects miniGame;
 
-        public void Init(DodgeTheBullets game)
+        public void Init(DodgeFallingObjects game)
         {
             miniGame = game;
         }

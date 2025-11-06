@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 557387}
   - component: {fileID: 557388}
   m_Layer: 0
-  m_Name: DodgeTheBullets
+  m_Name: DodgeFallingObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -160,16 +160,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 557385}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a70498e5a6b814e4ab57f55d5a4bcbb8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5252b6a2e5cdf494f9aa04be2185bec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 642362159}
   baseGameTime: 10
   gameSpeed: 1
-  playerSpeed: 5
-  bulletPrefab: {fileID: 4588226005977887164, guid: 4f840714c2402ff4aa26cdece8f765ab, type: 3}
-  bulletSpeed: 5
-  baseBulletSpawnDelay: 0.1
+  playerSpeed: 3.5
+  bulletPrefab: {fileID: 4588226005977887164, guid: 820218684c7037d4cb05eb89802f8f1e, type: 3}
+  bulletSpeed: 13
+  baseBulletSpawnDelay: 0.2
   player: {fileID: 1806231381}
 --- !u!1 &642362157
 GameObject:
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Unikaj wszystkich pociski!
+  m_text: "Unikaj spadaj\u0105ce pociski!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -738,7 +738,7 @@ Transform:
   m_GameObject: {fileID: 1806231381}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -3.5, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
