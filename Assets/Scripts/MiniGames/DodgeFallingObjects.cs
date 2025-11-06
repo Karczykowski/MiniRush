@@ -19,7 +19,7 @@ public class DodgeFallingObjects : MonoBehaviour
     private enum State { Play, Success, Fail }
     private State state = State.Play;
 
-    private float areaMinX, areaMaxX, areaMinY, areaMaxY;
+    private float areaMinX, areaMaxX;
     float camHalfHeight;
     float camHalfWidth;
     private float effectiveWaitTime = 5f;
@@ -44,8 +44,6 @@ public class DodgeFallingObjects : MonoBehaviour
 
         areaMinX = Camera.main.transform.position.x - camHalfWidth + playerHalfWidth;
         areaMaxX = Camera.main.transform.position.x + camHalfWidth - playerHalfWidth;
-        areaMinY = Camera.main.transform.position.y - camHalfHeight + playerHalfHeight;
-        areaMaxY = Camera.main.transform.position.y + camHalfHeight - playerHalfHeight;
 
         gameplayCoroutine = StartCoroutine(Run());
         bulletCoroutine = StartCoroutine(SpawnBullets());
