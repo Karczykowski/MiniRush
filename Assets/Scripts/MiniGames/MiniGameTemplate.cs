@@ -34,8 +34,22 @@ public class MiniGameTemplate : MonoBehaviour
     private IEnumerator Run()
     {
         yield return new WaitForSeconds(effectiveWaitTime);
-        Debug.Log("Przegrana!");
-        text.SetText("Przegrana");
-        state = State.Fail;
+        FinishGame(false);
+    }
+
+    private void FinishGame(bool win)
+    {
+        if (win)
+        {
+            Debug.Log("Wygrana!");
+            text.SetText("Wygrana");
+            state = State.Success;
+        }
+        else
+        {
+            Debug.Log("Przegrana!");
+            text.SetText("Przegrana");
+            state = State.Fail;
+        }
     }
 }

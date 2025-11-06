@@ -64,9 +64,7 @@ public class DodgeTheBullets : MonoBehaviour
     private IEnumerator Run()
     {
         yield return new WaitForSeconds(effectiveWaitTime);
-        Debug.Log("Wygrana!");
-        text.SetText("Wygrana");
-        state = State.Success;
+        FinishGame(true);
         StopCoroutine(bulletCoroutine);
         DestroyAllBullets();
     }
@@ -141,12 +139,26 @@ public class DodgeTheBullets : MonoBehaviour
 
     private void LoseGame()
     {
-        Debug.Log("Przegrana!");
-        text.SetText("Przegrana");
-        state = State.Fail;
+        FinishGame(false);
         StopCoroutine(gameplayCoroutine);
         StopCoroutine(bulletCoroutine);
         DestroyAllBullets();
+    }
+
+    private void FinishGame(bool win)
+    {
+        if (win)
+        {
+            Debug.Log("Wygrana!");
+            text.SetText("Wygrana");
+            state = State.Success;
+        }
+        else
+        {
+            Debug.Log("Przegrana!");
+            text.SetText("Przegrana");
+            state = State.Fail;
+        }
     }
 
     private class PlayerTrigger : MonoBehaviour

@@ -63,9 +63,7 @@ public class TapOnGreen : MonoBehaviour
         }
         else if (state == State.ReactionTime)
         {
-            Debug.Log("Wygrana!");
-            text.SetText("Wygrana");
-            state = State.Success;
+            FinishGame(true);
             StopCoroutine(gameplayCoroutine);
         }
     }
@@ -75,8 +73,22 @@ public class TapOnGreen : MonoBehaviour
         yield return new WaitForSeconds(effectiveWaitTime);
         state = State.ReactionTime;
         yield return new WaitForSeconds(reactionTime);
-        Debug.Log("Przegrana!");
-        text.SetText("Przegrana");
-        state = State.Fail;
+        FinishGame(false);
+    }
+
+    private void FinishGame(bool win)
+    {
+        if(win)
+        {
+            Debug.Log("Wygrana!");
+            text.SetText("Wygrana");
+            state = State.Success;
+        }
+        else
+        {
+            Debug.Log("Przegrana!");
+            text.SetText("Przegrana");
+            state = State.Fail;
+        }
     }
 }

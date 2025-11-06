@@ -155,7 +155,7 @@ MonoBehaviour:
   baseWaitTime: 5
   waitTimeVariation: 0.3
   gameSpeed: 1
-  reactionTime: 0.3
+  reactionTime: 0.5
   colorChangeIntensity: 0.2
 --- !u!4 &557387
 Transform:

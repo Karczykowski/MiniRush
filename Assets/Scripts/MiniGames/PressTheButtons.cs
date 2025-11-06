@@ -47,9 +47,7 @@ public class PressTheButtons : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0)
         {
-            Debug.Log("Przegrana!");
-            text.SetText("Przegrana");
-            state = State.Fail;
+            FinishGame(false);
             StopCoroutine(gameplayCoroutine);
         }
         if (Input.anyKeyDown)
@@ -64,17 +62,13 @@ public class PressTheButtons : MonoBehaviour
 
                 if (points >= numberOfKeys)
                 {
-                    Debug.Log("Wygrana!");
-                    text.SetText("Wygrana");
-                    state = State.Success;
+                    FinishGame(true);
                     StopCoroutine(gameplayCoroutine);
                 }
             }
             else
             {
-                Debug.Log("Przegrana!");
-                text.SetText("Przegrana");
-                state = State.Fail;
+                FinishGame(false);
                 StopCoroutine(gameplayCoroutine);
             }
         }
@@ -97,5 +91,21 @@ public class PressTheButtons : MonoBehaviour
             newKey = keys[Random.Range(0, keys.Length)];
         }
         return newKey;
+    }
+
+    private void FinishGame(bool win)
+    {
+        if (win)
+        {
+            Debug.Log("Wygrana!");
+            text.SetText("Wygrana");
+            state = State.Success;
+        }
+        else
+        {
+            Debug.Log("Przegrana!");
+            text.SetText("Przegrana");
+            state = State.Fail;
+        }
     }
 }
