@@ -25,6 +25,7 @@ public class DodgeTheBullets : MonoBehaviour
     private float effectiveWaitTime = 5f;
     private float effectiveBulletSpawnDelay = 0.5f;
     private Coroutine gameplayCoroutine;
+    private Coroutine bulletCoroutine;
     private List<GameObject> bullets = new List<GameObject>();
 
     void Start()
@@ -47,7 +48,7 @@ public class DodgeTheBullets : MonoBehaviour
         areaMaxY = Camera.main.transform.position.y + camHalfHeight - playerHalfHeight;
 
         gameplayCoroutine = StartCoroutine(Run());
-        StartCoroutine(SpawnBullets());
+        bulletCoroutine = StartCoroutine(SpawnBullets());
     }
 
     void Update()
@@ -66,6 +67,7 @@ public class DodgeTheBullets : MonoBehaviour
         Debug.Log("Wygrana!");
         text.SetText("Wygrana");
         state = State.Success;
+        StopCoroutine(bulletCoroutine);
         DestroyAllBullets();
     }
 
@@ -137,6 +139,16 @@ public class DodgeTheBullets : MonoBehaviour
         bullets.Clear();
     }
 
+    private void LoseGame()
+    {
+        Debug.Log("Przegrana!");
+        text.SetText("Przegrana");
+        state = State.Fail;
+        StopCoroutine(gameplayCoroutine);
+        StopCoroutine(bulletCoroutine);
+        DestroyAllBullets();
+    }
+
     private class PlayerTrigger : MonoBehaviour
     {
         private DodgeTheBullets miniGame;
@@ -150,10 +162,7 @@ public class DodgeTheBullets : MonoBehaviour
         {
             if (other.CompareTag("Bullet"))
             {
-                Debug.Log("Przegrana!");
-                miniGame.text.SetText("Przegrana");
-                miniGame.state = State.Success;
-                miniGame.DestroyAllBullets();
+                miniGame.LoseGame();
             }
         }
     }

@@ -169,7 +169,7 @@ MonoBehaviour:
   playerSpeed: 5
   bulletPrefab: {fileID: 4588226005977887164, guid: 4f840714c2402ff4aa26cdece8f765ab, type: 3}
   bulletSpeed: 5
-  baseBulletSpawnDelay: 0.3
+  baseBulletSpawnDelay: 0.2
   player: {fileID: 1806231381}
 --- !u!1 &642362157
 GameObject:
