@@ -100,6 +100,7 @@ public class PressTheButtons : MonoBehaviour
             Debug.Log("Wygrana!");
             text.SetText("Wygrana");
             state = State.Success;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
         }
         else
         {

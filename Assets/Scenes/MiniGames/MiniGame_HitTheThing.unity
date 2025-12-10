@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dartboardGameObject: {fileID: 1046098021}
   text: {fileID: 642362159}
-  gameTime: 5
+  baseGameTime: 10
   gameSpeed: 1
   dartboardSpeed: 10
 --- !u!1 &642362157

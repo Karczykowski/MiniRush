@@ -8,19 +8,19 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: d4f5077d71e001d43855a95d212f24b1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GamesScene.unity
     guid: 56aecdd18728f714ea0b3c55f829efef
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FreePlayScene.unity
     guid: efe75b19a40a2814fa96bbbfd0a8a64b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CollectionScene.unity
     guid: 258a779214e53b04fa177195f1579b18
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/OptionsScene.unity
     guid: 0aa7e99e8f4de184ba1e007c670570f8
   - enabled: 1
@@ -30,8 +30,14 @@ EditorBuildSettings:
     path: Assets/Scenes/MiniGames/MiniGame_HitTheThing.unity
     guid: 911c5eb9f5baa6c489a6a4953361eb64
   - enabled: 1
-    path: Assets/Scenes/MiniGames/MiniGame_PresTheButtons.unity
+    path: Assets/Scenes/MiniGames/MiniGame_PressTheButtons.unity
     guid: fa72e098a09341e4bafda7f8c395ae35
+  - enabled: 1
+    path: Assets/Scenes/MiniGames/MiniGame_DodgeTheBullets.unity
+    guid: 0f334fb1ddd77534ba6146df92d0220c
+  - enabled: 1
+    path: Assets/Scenes/MiniGames/MiniGame_DodgeFallingObjects.unity
+    guid: b98a642eeaa8cac428f762bc51dd31c8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
   m_UseUCBPForAssetBundles: 0
