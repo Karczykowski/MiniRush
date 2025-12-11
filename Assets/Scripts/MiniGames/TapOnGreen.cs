@@ -59,6 +59,7 @@ public class TapOnGreen : MonoBehaviour
             Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
             StopCoroutine(gameplayCoroutine);
         }
         else if (state == State.ReactionTime)
@@ -90,6 +91,7 @@ public class TapOnGreen : MonoBehaviour
             Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
         }
     }
 }

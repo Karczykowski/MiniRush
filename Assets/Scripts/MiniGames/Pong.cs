@@ -80,6 +80,7 @@ public class Pong : MonoBehaviour
             Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
         }
     }
 }
