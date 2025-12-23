@@ -3,31 +3,34 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
-    [SerializeField] string gamesScene;
-    [SerializeField] string freePlayScene;
-    [SerializeField] string collectionScene;
-    [SerializeField] string optionsScene;
-    public void StartGame()
+    [SerializeField] GameObject mainCanvas;
+    [SerializeField] GameObject collectionCanvas;
+    [SerializeField] GameObject creditsCanvas;
+
+    public void EnableMainCanvas()
     {
-        SceneManager.LoadScene(gamesScene);
+        mainCanvas.SetActive(true);
+        collectionCanvas.SetActive(false);
+        creditsCanvas.SetActive(false);
     }
 
-    public void FreePlay()
+    public void EnableCollectionCanvas()
     {
-        SceneManager.LoadScene(freePlayScene);
+        mainCanvas.SetActive(false);
+        collectionCanvas.SetActive(true);
+        creditsCanvas.SetActive(false);
     }
 
-    public void Collection()
+    public void EnableCreditsCanvas()
     {
-        SceneManager.LoadScene(collectionScene);
+        mainCanvas.SetActive(false);
+        collectionCanvas.SetActive(false);
+        creditsCanvas.SetActive(true);
     }
 
-    public void Options()
-    {
-        SceneManager.LoadScene(optionsScene);
-    }
-    public void QuitGame()
+    public void ExitGame()
     {
         Application.Quit();
     }
 }
+ 
