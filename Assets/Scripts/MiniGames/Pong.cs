@@ -7,6 +7,7 @@ public class Pong : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private GameObject boundry;
 
     [SerializeField] private float baseGameTime = 5.0f;
     [SerializeField] private float gameSpeed = 1.0f;
@@ -25,6 +26,8 @@ public class Pong : MonoBehaviour
 
     void Start()
     {
+        boundry.AddComponent<BottomTrigger>().Init(this);
+
         effectiveWaitTime = baseGameTime / gameSpeed;
 
         camHalfHeight = Camera.main.orthographicSize;
@@ -41,17 +44,18 @@ public class Pong : MonoBehaviour
 
 
         Vector2 dir = new Vector2(Random.value < 0.5f ? -1f : 1f, Random.Range(-1f, 1f)).normalized;
-        rb.velocity = dir * gameSpeed;
+        rb.linearVelocity = dir * gameSpeed;
     }
 
     void Update()
     {
         if (state != State.Play)
         {
+            rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        rb.velocity = rb.velocity.normalized * ballSpeed * gameSpeed;
+        rb.linearVelocity = rb.linearVelocity.normalized * ballSpeed * gameSpeed;
         Movement();
     }
 
@@ -80,14 +84,27 @@ public class Pong : MonoBehaviour
             Debug.Log("Wygrana!");
             text.SetText("Wygrana");
             state = State.Success;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
+            //UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
         }
         else
         {
             Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
+            //UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
+        }
+    }
+
+    private class BottomTrigger : MonoBehaviour
+    {
+        private Pong pongGame;
+        public void Init(Pong game)
+        {
+            pongGame = game;
+        }
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            pongGame.FinishGame(false);
         }
     }
 }

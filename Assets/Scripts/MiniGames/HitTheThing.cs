@@ -115,14 +115,14 @@ public class HitTheThing : MonoBehaviour
             Debug.Log("Wygrana!");
             text.SetText("Wygrana");
             state = State.Success;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
+            //UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
         }
         else
         {
             Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
+            //UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
         }
     }
 }
