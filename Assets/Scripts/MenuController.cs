@@ -7,6 +7,11 @@ public class MenuController : MonoBehaviour
     [SerializeField] GameObject collectionCanvas;
     [SerializeField] GameObject creditsCanvas;
 
+    public void StartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 6));
+    }
+
     public void EnableMainCanvas()
     {
         mainCanvas.SetActive(true);

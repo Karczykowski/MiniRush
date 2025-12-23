@@ -15,6 +15,8 @@ public class TapOnGreen : MonoBehaviour
     [SerializeField] private float gameSpeed = 1.0f;
     [SerializeField] private float reactionTime = 1.0f;
     [SerializeField] private float colorChangeIntensity = 0.2f;
+    [SerializeField] private float loseTimeDelay = 2.0f;
+    [SerializeField] private float winTimeDelay = 2.0f;
 
     private enum State { Waiting, ReactionTime, Success, Fail }
     private State state = State.Waiting;
@@ -56,16 +58,11 @@ public class TapOnGreen : MonoBehaviour
 
         if (state == State.Waiting)
         {
-            Debug.Log("Przegrana!");
-            text.SetText("Przegrana");
-            state = State.Fail;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
-            StopCoroutine(gameplayCoroutine);
+            FinishGame(false);
         }
         else if (state == State.ReactionTime)
         {
             FinishGame(true);
-            StopCoroutine(gameplayCoroutine);
         }
     }
 
@@ -77,21 +74,34 @@ public class TapOnGreen : MonoBehaviour
         FinishGame(false);
     }
 
+    private IEnumerator DelayedLevelUp()
+    {
+        yield return new WaitForSeconds(winTimeDelay);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 6));
+    }
+
+    private IEnumerator DelayedReturnToMenu()
+    {
+        yield return new WaitForSeconds(loseTimeDelay);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+    }
+
     private void FinishGame(bool win)
     {
-        if(win)
+        StopCoroutine(gameplayCoroutine);
+        if (win)
         {
             Debug.Log("Wygrana!");
             text.SetText("Wygrana");
             state = State.Success;
-            //UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
+            StartCoroutine(DelayedLevelUp());
         }
         else
         {
             Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
-            //UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
+            StartCoroutine(DelayedReturnToMenu());
         }
     }
 }

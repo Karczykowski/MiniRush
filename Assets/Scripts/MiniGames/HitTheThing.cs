@@ -11,6 +11,8 @@ public class HitTheThing : MonoBehaviour
     [SerializeField] private float baseGameTime = 5.0f;
     [SerializeField] private float gameSpeed = 1.0f;
     [SerializeField] private float dartboardSpeed = 1250.0f;
+    [SerializeField] private float loseTimeDelay = 2.0f;
+    [SerializeField] private float winTimeDelay = 2.0f;
 
     private enum State { Play, Success, Fail }
     private State state = State.Play;
@@ -94,12 +96,10 @@ public class HitTheThing : MonoBehaviour
         if (hit == null)
         {
             FinishGame(false);
-            StopCoroutine(gameplayCoroutine);
         }
         else if(hit.gameObject == dartboardGameObject)
         {
             FinishGame(true);
-            StopCoroutine(gameplayCoroutine);
         }
     }
 
@@ -108,21 +108,35 @@ public class HitTheThing : MonoBehaviour
         yield return new WaitForSeconds(effectiveWaitTime);
         FinishGame(false);
     }
+
+    private IEnumerator DelayedLevelUp()
+    {
+        yield return new WaitForSeconds(winTimeDelay);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 6));
+    }
+
+    private IEnumerator DelayedReturnToMenu()
+    {
+        yield return new WaitForSeconds(loseTimeDelay);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+    }
+
     private void FinishGame(bool win)
     {
+        StopCoroutine(gameplayCoroutine);
         if (win)
         {
             Debug.Log("Wygrana!");
             text.SetText("Wygrana");
             state = State.Success;
-            //UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
+            StartCoroutine(DelayedLevelUp());
         }
         else
         {
             Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
-            //UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(0, 5));
+            StartCoroutine(DelayedReturnToMenu());
         }
     }
 }
