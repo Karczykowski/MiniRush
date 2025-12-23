@@ -6,10 +6,12 @@ using TMPro;
 public class Pong : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private Rigidbody2D rb;
 
     [SerializeField] private float baseGameTime = 5.0f;
     [SerializeField] private float gameSpeed = 1.0f;
     [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private float ballSpeed = 3.0f;
     [SerializeField] private GameObject player;
 
     private enum State { Play, Success, Fail }
@@ -36,6 +38,10 @@ public class Pong : MonoBehaviour
         areaMaxX = Camera.main.transform.position.x + camHalfWidth - playerHalfWidth;
 
         gameplayCoroutine = StartCoroutine(Run());
+
+
+        Vector2 dir = new Vector2(Random.value < 0.5f ? -1f : 1f, Random.Range(-1f, 1f)).normalized;
+        rb.velocity = dir * gameSpeed;
     }
 
     void Update()
@@ -45,6 +51,7 @@ public class Pong : MonoBehaviour
             return;
         }
 
+        rb.velocity = rb.velocity.normalized * ballSpeed * gameSpeed;
         Movement();
     }
 
