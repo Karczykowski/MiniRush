@@ -9,7 +9,7 @@ public class MenuController : MonoBehaviour
 
     public void StartGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 6));
+        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
     }
 
     public void EnableMainCanvas()
@@ -17,6 +17,7 @@ public class MenuController : MonoBehaviour
         mainCanvas.SetActive(true);
         collectionCanvas.SetActive(false);
         creditsCanvas.SetActive(false);
+
     }
 
     public void EnableCollectionCanvas()

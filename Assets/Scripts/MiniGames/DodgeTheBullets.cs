@@ -141,7 +141,7 @@ public class DodgeTheBullets : MonoBehaviour
     private IEnumerator DelayedLevelUp()
     {
         yield return new WaitForSeconds(winTimeDelay);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 6));
+        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
     }
 
     private IEnumerator DelayedReturnToMenu()
