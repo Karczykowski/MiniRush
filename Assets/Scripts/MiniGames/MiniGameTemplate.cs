@@ -6,9 +6,9 @@ using TMPro;
 public class MiniGameTemplate : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
+    protected float gameSpeed = 1.0f;
 
     [SerializeField] private float baseGameTime = 5.0f;
-    [SerializeField] private float gameSpeed = 1.0f;
     [SerializeField] private float loseTimeDelay = 2.0f;
     [SerializeField] private float winTimeDelay = 2.0f;
 
@@ -20,6 +20,7 @@ public class MiniGameTemplate : MonoBehaviour
 
     void Start()
     {
+        gameSpeed = GameManager.Instance.GameSpeed;
         effectiveWaitTime = baseGameTime / gameSpeed;
 
         gameplayCoroutine = StartCoroutine(Run());
@@ -42,6 +43,7 @@ public class MiniGameTemplate : MonoBehaviour
     private IEnumerator DelayedLevelUp()
     {
         yield return new WaitForSeconds(winTimeDelay);
+        GameManager.Instance.OnMiniGameWin();
         UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
     }
 

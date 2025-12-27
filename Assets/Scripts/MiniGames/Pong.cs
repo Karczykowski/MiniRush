@@ -5,12 +5,13 @@ using TMPro;
 
 public class Pong : MonoBehaviour
 {
+    protected float gameSpeed = 1.0f;
+
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private GameObject boundry;
 
     [SerializeField] private float baseGameTime = 5.0f;
-    [SerializeField] private float gameSpeed = 1.0f;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float ballSpeed = 3.0f;
     [SerializeField] private GameObject player;
@@ -28,6 +29,8 @@ public class Pong : MonoBehaviour
 
     void Start()
     {
+        gameSpeed = GameManager.Instance.GameSpeed;
+
         boundry.AddComponent<BottomTrigger>().Init(this);
 
         effectiveWaitTime = baseGameTime / gameSpeed;
@@ -82,6 +85,7 @@ public class Pong : MonoBehaviour
     private IEnumerator DelayedLevelUp()
     {
         yield return new WaitForSeconds(winTimeDelay);
+        GameManager.Instance.OnMiniGameWin();
         UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
     }
 

@@ -7,9 +7,9 @@ using System.Collections.Generic;
 public class DodgeTheBullets : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
+    protected float gameSpeed = 1.0f;
 
     [SerializeField] private float baseGameTime = 10.0f;
-    [SerializeField] private float gameSpeed = 1.0f;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed = 5.0f;
@@ -32,6 +32,7 @@ public class DodgeTheBullets : MonoBehaviour
 
     void Start()
     {
+        gameSpeed = GameManager.Instance.GameSpeed;
         player.AddComponent<PlayerTrigger>().Init(this);
 
         effectiveWaitTime = baseGameTime / gameSpeed;
@@ -141,6 +142,7 @@ public class DodgeTheBullets : MonoBehaviour
     private IEnumerator DelayedLevelUp()
     {
         yield return new WaitForSeconds(winTimeDelay);
+        GameManager.Instance.OnMiniGameWin();
         UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
     }
 

@@ -9,10 +9,10 @@ public class TapOnGreen : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private Color startColor = new Color(0.0f, 0.0f, 0.0f);
     [SerializeField] private Color clickColor = new Color(0.0f, 1.0f, 0.0f);
+    protected float gameSpeed = 1.0f;
 
     [SerializeField] private float baseWaitTime = 5.0f;
     [SerializeField] private float waitTimeVariation = 0.3f;
-    [SerializeField] private float gameSpeed = 1.0f;
     [SerializeField] private float reactionTime = 1.0f;
     [SerializeField] private float colorChangeIntensity = 0.2f;
     [SerializeField] private float loseTimeDelay = 2.0f;
@@ -27,6 +27,7 @@ public class TapOnGreen : MonoBehaviour
 
     void Start()
     {
+        gameSpeed = GameManager.Instance.GameSpeed;
         minEffectiveTime = (1f - waitTimeVariation) * baseWaitTime;
         maxEffectiveTime = (1f + waitTimeVariation) * baseWaitTime;
         effectiveWaitTime = Random.Range(minEffectiveTime, maxEffectiveTime) / gameSpeed;
@@ -77,6 +78,7 @@ public class TapOnGreen : MonoBehaviour
     private IEnumerator DelayedLevelUp()
     {
         yield return new WaitForSeconds(winTimeDelay);
+        GameManager.Instance.OnMiniGameWin();
         UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
     }
 
