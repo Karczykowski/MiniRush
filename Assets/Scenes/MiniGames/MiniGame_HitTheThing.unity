@@ -167,7 +167,7 @@ MonoBehaviour:
   text: {fileID: 642362159}
   baseGameTime: 10
   gameSpeed: 1
-  dartboardSpeed: 10
+  dartboardSpeed: 20
   loseTimeDelay: 2
   winTimeDelay: 2
 --- !u!1 &642362157

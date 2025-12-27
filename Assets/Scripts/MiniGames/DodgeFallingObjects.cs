@@ -132,7 +132,7 @@ public class DodgeFallingObjects : MonoBehaviour
 
     private void FinishGame(bool win)
     {
-        StopCoroutine(bulletCoroutine);
+        StopCoroutine(gameplayCoroutine);
         if (win)
         {
             Debug.Log("Wygrana!");

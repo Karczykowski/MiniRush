@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 642362159}
-  baseGameTime: 10
+  baseGameTime: 5
   gameSpeed: 1
   playerSpeed: 3.5
   bulletPrefab: {fileID: 4588226005977887164, guid: 820218684c7037d4cb05eb89802f8f1e, type: 3}
