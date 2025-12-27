@@ -154,7 +154,6 @@ MonoBehaviour:
   clickColor: {r: 0, g: 1, b: 0, a: 1}
   baseWaitTime: 4
   waitTimeVariation: 0.3
-  gameSpeed: 1
   reactionTime: 0.5
   colorChangeIntensity: 0.2
   loseTimeDelay: 2
