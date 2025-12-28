@@ -15,8 +15,6 @@ public class DodgeFallingObjects : MonoBehaviour
     [SerializeField] private float bulletSpeed = 5.0f;
     [SerializeField] private float baseBulletSpawnDelay = 0.5f;
     [SerializeField] private GameObject player;
-    [SerializeField] private float loseTimeDelay = 2.0f;
-    [SerializeField] private float winTimeDelay = 2.0f;
 
     private enum State { Play, Success, Fail }
     private State state = State.Play;
@@ -28,11 +26,15 @@ public class DodgeFallingObjects : MonoBehaviour
     private float effectiveBulletSpawnDelay = 0.5f;
     private Coroutine gameplayCoroutine;
     private Coroutine bulletCoroutine;
+    private Coroutine fadeTextCoroutine;
     private List<GameObject> bullets = new List<GameObject>();
 
     void Start()
     {
-        gameSpeed = GameManager.Instance.GameSpeed;
+        if(GameManager.Instance != null)
+        {
+            gameSpeed = GameManager.Instance.GameSpeed;
+        }
         player.AddComponent<PlayerTrigger>().Init(this);
 
         effectiveWaitTime = baseGameTime / gameSpeed;
@@ -50,6 +52,7 @@ public class DodgeFallingObjects : MonoBehaviour
 
         gameplayCoroutine = StartCoroutine(Run());
         bulletCoroutine = StartCoroutine(SpawnBullets());
+        fadeTextCoroutine = StartCoroutine(FadeText());
     }
 
     void Update()
@@ -60,6 +63,13 @@ public class DodgeFallingObjects : MonoBehaviour
         }
 
         Movement();
+    }
+
+    private IEnumerator FadeText()
+    {
+        Debug.Log(GameManager.Instance.textFadeTime);
+        yield return new WaitForSeconds(GameManager.Instance.textFadeTime);
+        text.SetText("");
     }
 
     private IEnumerator Run()
@@ -121,20 +131,20 @@ public class DodgeFallingObjects : MonoBehaviour
 
     private IEnumerator DelayedLevelUp()
     {
-        yield return new WaitForSeconds(winTimeDelay);
+        yield return new WaitForSeconds(GameManager.Instance.winTimeDelay);
         GameManager.Instance.OnMiniGameWin();
-        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
     }
 
     private IEnumerator DelayedReturnToMenu()
     {
-        yield return new WaitForSeconds(loseTimeDelay);
+        yield return new WaitForSeconds(GameManager.Instance.loseTimeDelay);
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     private void FinishGame(bool win)
     {
         StopCoroutine(gameplayCoroutine);
+        StopCoroutine(fadeTextCoroutine);
         if (win)
         {
             Debug.Log("Wygrana!");

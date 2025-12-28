@@ -5,12 +5,11 @@ using TMPro;
 public class PressTheButtons : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private TextMeshProUGUI winText;
     protected float gameSpeed;
 
     [SerializeField] private float baseGameTime = 5.0f;
     [SerializeField] private float numberOfKeys = 4;
-    [SerializeField] private float loseTimeDelay = 2.0f;
-    [SerializeField] private float winTimeDelay = 2.0f;
 
     private enum State { Play, Success, Fail }
     private State state = State.Play;
@@ -24,12 +23,15 @@ public class PressTheButtons : MonoBehaviour
 
     private KeyCode[] keys = new KeyCode[]
     {
-        KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T
+        KeyCode.Q, KeyCode.W, KeyCode.E
     };
 
     void Start()
     {
-        gameSpeed = GameManager.Instance.GameSpeed;
+        if (GameManager.Instance != null)
+        {
+            gameSpeed = GameManager.Instance.GameSpeed;
+        }
         effectiveWaitTime = baseGameTime / gameSpeed;
         effectiveWaitTimeForKey = effectiveWaitTime / numberOfKeys;
         points = 0;
@@ -37,7 +39,7 @@ public class PressTheButtons : MonoBehaviour
         currentKey = GetNewKey();
 
         gameplayCoroutine = StartCoroutine(Run());
-        text.SetText($"Klawisz: {currentKey}");
+        text.SetText($"{currentKey}");
     }
 
     void Update()
@@ -59,7 +61,7 @@ public class PressTheButtons : MonoBehaviour
                 Debug.Log("+1");
                 timer = effectiveWaitTimeForKey;
                 currentKey = GetNewKey();
-                text.SetText($"Klawisz: {currentKey}");
+                text.SetText($"{currentKey}");
                 points++;
 
                 if (points >= numberOfKeys)
@@ -78,7 +80,7 @@ public class PressTheButtons : MonoBehaviour
     {
         yield return new WaitForSeconds(effectiveWaitTime);
         Debug.Log("Przegrana!");
-        text.SetText("Przegrana");
+        winText.SetText("Przegrana");
         state = State.Fail;
     }
 
@@ -95,14 +97,13 @@ public class PressTheButtons : MonoBehaviour
 
     private IEnumerator DelayedLevelUp()
     {
-        yield return new WaitForSeconds(winTimeDelay);
+        yield return new WaitForSeconds(GameManager.Instance.winTimeDelay);
         GameManager.Instance.OnMiniGameWin();
-        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
     }
 
     private IEnumerator DelayedReturnToMenu()
     {
-        yield return new WaitForSeconds(loseTimeDelay);
+        yield return new WaitForSeconds(GameManager.Instance.loseTimeDelay);
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
@@ -112,14 +113,14 @@ public class PressTheButtons : MonoBehaviour
         if (win)
         {
             Debug.Log("Wygrana!");
-            text.SetText("Wygrana");
+            winText.SetText("Wygrana");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
         }
         else
         {
             Debug.Log("Przegrana!");
-            text.SetText("Przegrana");
+            winText.SetText("Przegrana");
             state = State.Fail;
             StartCoroutine(DelayedReturnToMenu());
         }

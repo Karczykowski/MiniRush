@@ -15,8 +15,6 @@ public class TapOnGreen : MonoBehaviour
     [SerializeField] private float waitTimeVariation = 0.3f;
     [SerializeField] private float reactionTime = 1.0f;
     [SerializeField] private float colorChangeIntensity = 0.2f;
-    [SerializeField] private float loseTimeDelay = 2.0f;
-    [SerializeField] private float winTimeDelay = 2.0f;
 
     private enum State { Waiting, ReactionTime, Success, Fail }
     private State state = State.Waiting;
@@ -27,7 +25,10 @@ public class TapOnGreen : MonoBehaviour
 
     void Start()
     {
-        gameSpeed = GameManager.Instance.GameSpeed;
+        if (GameManager.Instance != null)
+        {
+            gameSpeed = GameManager.Instance.GameSpeed;
+        }
         minEffectiveTime = (1f - waitTimeVariation) * baseWaitTime;
         maxEffectiveTime = (1f + waitTimeVariation) * baseWaitTime;
         effectiveWaitTime = Random.Range(minEffectiveTime, maxEffectiveTime) / gameSpeed;
@@ -77,14 +78,13 @@ public class TapOnGreen : MonoBehaviour
 
     private IEnumerator DelayedLevelUp()
     {
-        yield return new WaitForSeconds(winTimeDelay);
+        yield return new WaitForSeconds(GameManager.Instance.winTimeDelay);
         GameManager.Instance.OnMiniGameWin();
-        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
     }
 
     private IEnumerator DelayedReturnToMenu()
     {
-        yield return new WaitForSeconds(loseTimeDelay);
+        yield return new WaitForSeconds(GameManager.Instance.loseTimeDelay);
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 

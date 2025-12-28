@@ -11,8 +11,6 @@ public class HitTheThing : MonoBehaviour
 
     [SerializeField] private float baseGameTime = 5.0f;
     [SerializeField] private float dartboardSpeed = 1250.0f;
-    [SerializeField] private float loseTimeDelay = 2.0f;
-    [SerializeField] private float winTimeDelay = 2.0f;
 
     private enum State { Play, Success, Fail }
     private State state = State.Play;
@@ -21,10 +19,14 @@ public class HitTheThing : MonoBehaviour
     private float areaMinX, areaMaxX, areaMinY, areaMaxY;
     private float effectiveWaitTime = 5f;
     private Coroutine gameplayCoroutine;
+    private Coroutine fadeTextCoroutine;
 
     void Start()
     {
-        gameSpeed = GameManager.Instance.GameSpeed;
+        if (GameManager.Instance != null)
+        {
+            gameSpeed = GameManager.Instance.GameSpeed;
+        }
         effectiveWaitTime = baseGameTime / gameSpeed;
 
         direction = Random.insideUnitCircle.normalized;
@@ -42,6 +44,7 @@ public class HitTheThing : MonoBehaviour
         areaMaxY = Camera.main.transform.position.y + camHalfHeight - dartboardHalfHeight;
 
         gameplayCoroutine = StartCoroutine(Run());
+        fadeTextCoroutine = StartCoroutine(FadeText());
     }
 
     void Update()
@@ -85,7 +88,7 @@ public class HitTheThing : MonoBehaviour
 
     public void Shoot(Vector2 screenPos)
     {
-        if (state != State.Play) {
+        if (state != State.Play || (PauseManager.Instance != null && PauseManager.Instance.isPaused)) {
             return;
         }
 
@@ -104,6 +107,13 @@ public class HitTheThing : MonoBehaviour
         }
     }
 
+    private IEnumerator FadeText()
+    {
+        Debug.Log(GameManager.Instance.textFadeTime);
+        yield return new WaitForSeconds(GameManager.Instance.textFadeTime);
+        text.SetText("");
+    }
+
     private IEnumerator Run()
     {
         yield return new WaitForSeconds(effectiveWaitTime);
@@ -112,20 +122,20 @@ public class HitTheThing : MonoBehaviour
 
     private IEnumerator DelayedLevelUp()
     {
-        yield return new WaitForSeconds(winTimeDelay);
+        yield return new WaitForSeconds(GameManager.Instance.winTimeDelay);
         GameManager.Instance.OnMiniGameWin();
-        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
     }
 
     private IEnumerator DelayedReturnToMenu()
     {
-        yield return new WaitForSeconds(loseTimeDelay);
+        yield return new WaitForSeconds(GameManager.Instance.loseTimeDelay);
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     private void FinishGame(bool win)
     {
         StopCoroutine(gameplayCoroutine);
+        StopCoroutine(fadeTextCoroutine);
         if (win)
         {
             Debug.Log("Wygrana!");
