@@ -38,7 +38,6 @@ public class TapOnGreen : MonoBehaviour
         reactionTime = reactionTime / gameSpeed;
 
         gameplayCoroutine = StartCoroutine(Run());
-        fadeImagesCoroutine = StartCoroutine(FadeImage());
     }
 
     void Update()
@@ -112,7 +111,6 @@ public class TapOnGreen : MonoBehaviour
     private void FinishGame(bool win)
     {
         StopCoroutine(gameplayCoroutine);
-        StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
             Debug.Log("Wygrana!");
