@@ -8,6 +8,7 @@ public class PressTheButtons : MonoBehaviour
     [SerializeField] private TextMeshProUGUI winText;
     protected float gameSpeed;
 
+    [SerializeField] private GameObject[] images;
     [SerializeField] private float baseGameTime = 5.0f;
     [SerializeField] private float numberOfKeys = 4;
 
@@ -20,6 +21,7 @@ public class PressTheButtons : MonoBehaviour
     private float timer;
     private KeyCode currentKey = KeyCode.Q;
     private Coroutine gameplayCoroutine;
+    private Coroutine fadeImagesCoroutine;
 
     private KeyCode[] keys = new KeyCode[]
     {
@@ -39,6 +41,7 @@ public class PressTheButtons : MonoBehaviour
         currentKey = GetNewKey();
 
         gameplayCoroutine = StartCoroutine(Run());
+        fadeImagesCoroutine = StartCoroutine(FadeImage());
         text.SetText($"{currentKey}");
     }
 
@@ -58,7 +61,6 @@ public class PressTheButtons : MonoBehaviour
         {
             if (Input.GetKeyDown(currentKey))
             {
-                Debug.Log("+1");
                 timer = effectiveWaitTimeForKey;
                 currentKey = GetNewKey();
                 text.SetText($"{currentKey}");
@@ -72,6 +74,24 @@ public class PressTheButtons : MonoBehaviour
             else
             {
                 FinishGame(false);
+            }
+        }
+    }
+
+    private IEnumerator FadeImage()
+    {
+        yield return new WaitForSeconds(GameManager.Instance.imageFadeTime);
+
+        if(images.Length == 0)
+        {
+            yield break;
+        }
+
+        foreach (GameObject image in images)
+        {
+            if (image != null)
+            {
+                image.SetActive(false);
             }
         }
     }
@@ -110,10 +130,11 @@ public class PressTheButtons : MonoBehaviour
     private void FinishGame(bool win)
     {
         StopCoroutine(gameplayCoroutine);
+        StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
             Debug.Log("Wygrana!");
-            winText.SetText("Wygrana");
+            winText.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
         }

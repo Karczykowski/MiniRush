@@ -11,6 +11,7 @@ public class TapOnGreen : MonoBehaviour
     [SerializeField] private Color clickColor = new Color(0.0f, 1.0f, 0.0f);
     protected float gameSpeed = 1.0f;
 
+    [SerializeField] private GameObject[] images;
     [SerializeField] private float baseWaitTime = 5.0f;
     [SerializeField] private float waitTimeVariation = 0.3f;
     [SerializeField] private float reactionTime = 1.0f;
@@ -22,6 +23,7 @@ public class TapOnGreen : MonoBehaviour
     private float minEffectiveTime = 1f;
     private float maxEffectiveTime = 1f;
     private Coroutine gameplayCoroutine;
+    private Coroutine fadeImagesCoroutine;
 
     void Start()
     {
@@ -36,6 +38,7 @@ public class TapOnGreen : MonoBehaviour
         reactionTime = reactionTime / gameSpeed;
 
         gameplayCoroutine = StartCoroutine(Run());
+        fadeImagesCoroutine = StartCoroutine(FadeImage());
     }
 
     void Update()
@@ -68,6 +71,24 @@ public class TapOnGreen : MonoBehaviour
         }
     }
 
+    private IEnumerator FadeImage()
+    {
+        yield return new WaitForSeconds(GameManager.Instance.imageFadeTime);
+
+        if (images.Length == 0)
+        {
+            yield break;
+        }
+
+        foreach (GameObject image in images)
+        {
+            if (image != null)
+            {
+                image.SetActive(false);
+            }
+        }
+    }
+
     private IEnumerator Run()
     {
         yield return new WaitForSeconds(effectiveWaitTime);
@@ -91,10 +112,11 @@ public class TapOnGreen : MonoBehaviour
     private void FinishGame(bool win)
     {
         StopCoroutine(gameplayCoroutine);
+        StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
             Debug.Log("Wygrana!");
-            text.SetText("Wygrana");
+            text.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
         }

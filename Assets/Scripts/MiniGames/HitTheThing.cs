@@ -9,6 +9,7 @@ public class HitTheThing : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;
     protected float gameSpeed = 1.0f;
 
+    [SerializeField] private GameObject[] images;
     [SerializeField] private float baseGameTime = 5.0f;
     [SerializeField] private float dartboardSpeed = 1250.0f;
 
@@ -20,6 +21,7 @@ public class HitTheThing : MonoBehaviour
     private float effectiveWaitTime = 5f;
     private Coroutine gameplayCoroutine;
     private Coroutine fadeTextCoroutine;
+    private Coroutine fadeImagesCoroutine;
 
     void Start()
     {
@@ -44,7 +46,7 @@ public class HitTheThing : MonoBehaviour
         areaMaxY = Camera.main.transform.position.y + camHalfHeight - dartboardHalfHeight;
 
         gameplayCoroutine = StartCoroutine(Run());
-        fadeTextCoroutine = StartCoroutine(FadeText());
+        fadeImagesCoroutine = StartCoroutine(FadeImage());
     }
 
     void Update()
@@ -107,9 +109,26 @@ public class HitTheThing : MonoBehaviour
         }
     }
 
+    private IEnumerator FadeImage()
+    {
+        yield return new WaitForSeconds(GameManager.Instance.imageFadeTime);
+
+        if (images.Length == 0)
+        {
+            yield break;
+        }
+
+        foreach (GameObject image in images)
+        {
+            if (image != null)
+            {
+                image.SetActive(false);
+            }
+        }
+    }
+
     private IEnumerator FadeText()
     {
-        Debug.Log(GameManager.Instance.textFadeTime);
         yield return new WaitForSeconds(GameManager.Instance.textFadeTime);
         text.SetText("");
     }
@@ -135,11 +154,11 @@ public class HitTheThing : MonoBehaviour
     private void FinishGame(bool win)
     {
         StopCoroutine(gameplayCoroutine);
-        StopCoroutine(fadeTextCoroutine);
+        StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
             Debug.Log("Wygrana!");
-            text.SetText("Wygrana");
+            text.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
         }

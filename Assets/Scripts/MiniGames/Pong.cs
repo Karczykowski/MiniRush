@@ -11,6 +11,7 @@ public class Pong : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private GameObject boundry;
 
+    [SerializeField] private GameObject[] images;
     [SerializeField] private float baseGameTime = 5.0f;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float ballSpeed = 3.0f;
@@ -25,6 +26,7 @@ public class Pong : MonoBehaviour
     private float effectiveWaitTime = 5f;
     private Coroutine gameplayCoroutine;
     private Coroutine fadeTextCoroutine;
+    private Coroutine fadeImagesCoroutine;
 
     void Start()
     {
@@ -48,7 +50,7 @@ public class Pong : MonoBehaviour
         areaMaxX = Camera.main.transform.position.x + camHalfWidth - playerHalfWidth;
 
         gameplayCoroutine = StartCoroutine(Run());
-        fadeTextCoroutine = StartCoroutine(FadeText());
+        fadeImagesCoroutine = StartCoroutine(FadeImage());
 
         Vector2 dir = new Vector2(Random.value < 0.5f ? -1f : 1f, Random.Range(0.2f, 1f)).normalized;
         rb.linearVelocity = dir * gameSpeed;
@@ -78,9 +80,26 @@ public class Pong : MonoBehaviour
         player.transform.position = position;
     }
 
+    private IEnumerator FadeImage()
+    {
+        yield return new WaitForSeconds(GameManager.Instance.imageFadeTime);
+
+        if (images.Length == 0)
+        {
+            yield break;
+        }
+
+        foreach (GameObject image in images)
+        {
+            if (image != null)
+            {
+                image.SetActive(false);
+            }
+        }
+    }
+
     private IEnumerator FadeText()
     {
-        Debug.Log(GameManager.Instance.textFadeTime);
         yield return new WaitForSeconds(GameManager.Instance.textFadeTime);
         text.SetText("");
     }
@@ -107,12 +126,12 @@ public class Pong : MonoBehaviour
     private void FinishGame(bool win)
     {
         StopCoroutine(gameplayCoroutine);
-        StopCoroutine(fadeTextCoroutine);
+        StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
             
             Debug.Log("Wygrana!");
-            text.SetText("Wygrana");
+            text.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
         }

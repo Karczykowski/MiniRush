@@ -165,6 +165,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dartboardGameObject: {fileID: 1046098021}
   text: {fileID: 642362159}
+  images:
+  - {fileID: 1045399205}
+  - {fileID: 1769980436}
   baseGameTime: 5
   dartboardSpeed: 8
 --- !u!1 &642362157
@@ -202,7 +205,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 605.0567, y: 50}
+  m_SizeDelta: {x: 1086.9409, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &642362159
 MonoBehaviour:

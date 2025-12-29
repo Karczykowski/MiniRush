@@ -9,7 +9,7 @@ public class MenuController : MonoBehaviour
 
     public void StartGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, 7));
+        UnityEngine.SceneManagement.SceneManager.LoadScene(Random.Range(1, SceneManager.sceneCountInBuildSettings));
     }
 
     public void EnableMainCanvas()

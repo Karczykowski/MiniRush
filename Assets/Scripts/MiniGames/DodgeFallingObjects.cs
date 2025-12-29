@@ -9,6 +9,7 @@ public class DodgeFallingObjects : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;
     protected float gameSpeed = 1.0f;
 
+    [SerializeField] private GameObject[] images;
     [SerializeField] private float baseGameTime = 10.0f;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private GameObject bulletPrefab;
@@ -27,6 +28,7 @@ public class DodgeFallingObjects : MonoBehaviour
     private Coroutine gameplayCoroutine;
     private Coroutine bulletCoroutine;
     private Coroutine fadeTextCoroutine;
+    private Coroutine fadeImagesCoroutine;
     private List<GameObject> bullets = new List<GameObject>();
 
     void Start()
@@ -52,7 +54,7 @@ public class DodgeFallingObjects : MonoBehaviour
 
         gameplayCoroutine = StartCoroutine(Run());
         bulletCoroutine = StartCoroutine(SpawnBullets());
-        fadeTextCoroutine = StartCoroutine(FadeText());
+        fadeImagesCoroutine = StartCoroutine(FadeImage());
     }
 
     void Update()
@@ -65,9 +67,26 @@ public class DodgeFallingObjects : MonoBehaviour
         Movement();
     }
 
+    private IEnumerator FadeImage()
+    {
+        yield return new WaitForSeconds(GameManager.Instance.imageFadeTime);
+
+        if (images.Length == 0)
+        {
+            yield break;
+        }
+
+        foreach (GameObject image in images)
+        {
+            if (image != null)
+            {
+                image.SetActive(false);
+            }
+        }
+    }
+
     private IEnumerator FadeText()
     {
-        Debug.Log(GameManager.Instance.textFadeTime);
         yield return new WaitForSeconds(GameManager.Instance.textFadeTime);
         text.SetText("");
     }
@@ -144,11 +163,11 @@ public class DodgeFallingObjects : MonoBehaviour
     private void FinishGame(bool win)
     {
         StopCoroutine(gameplayCoroutine);
-        StopCoroutine(fadeTextCoroutine);
+        StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
             Debug.Log("Wygrana!");
-            text.SetText("Wygrana");
+            text.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
         }

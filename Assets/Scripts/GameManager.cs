@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public float GameSpeed { get; private set; } = 1.0f;
     public float speedIncrease = 0.1f;
     public float textFadeTime = 1.0f;
+    public float imageFadeTime = 1.0f;
     public float loseTimeDelay = 2.0f;
     public float winTimeDelay = 2.0f;
     int lastSceneIndex = -1;

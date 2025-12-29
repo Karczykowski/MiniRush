@@ -8,7 +8,7 @@ public class MiniGameTemplate : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;
     protected float gameSpeed = 1.0f;
 
-    [SerializeField] private float textFadeTime = 1.0f;
+    [SerializeField] private GameObject[] images;
     [SerializeField] private float baseGameTime = 5.0f;
 
     private enum State { Play, Success, Fail }
@@ -16,6 +16,7 @@ public class MiniGameTemplate : MonoBehaviour
 
     private float effectiveWaitTime = 5f;
     private Coroutine gameplayCoroutine;
+    private Coroutine fadeImagesCoroutine;
 
     void Start()
     {
@@ -26,7 +27,7 @@ public class MiniGameTemplate : MonoBehaviour
         effectiveWaitTime = baseGameTime / gameSpeed;
 
         gameplayCoroutine = StartCoroutine(Run());
-        StartCoroutine(FadeText());
+        fadeImagesCoroutine = StartCoroutine(FadeImage());
     }
 
     void Update()
@@ -37,9 +38,27 @@ public class MiniGameTemplate : MonoBehaviour
         }
     }
 
+    private IEnumerator FadeImage()
+    {
+        yield return new WaitForSeconds(GameManager.Instance.imageFadeTime);
+
+        if (images.Length == 0)
+        {
+            yield break;
+        }
+
+        foreach (GameObject image in images)
+        {
+            if (image != null)
+            {
+                image.SetActive(false);
+            }
+        }
+    }
+
     private IEnumerator FadeText()
     {
-        yield return new WaitForSeconds(textFadeTime);
+        yield return new WaitForSeconds(GameManager.Instance.textFadeTime);
         text.SetText("");
     }
 
@@ -64,10 +83,11 @@ public class MiniGameTemplate : MonoBehaviour
     private void FinishGame(bool win)
     {
         StopCoroutine(gameplayCoroutine);
+        StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
             Debug.Log("Wygrana!");
-            text.SetText("Wygrana");
+            text.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
         }
