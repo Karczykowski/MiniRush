@@ -58,10 +58,19 @@ public class TapOnGreen : MonoBehaviour
 
         bool press = Input.GetMouseButtonDown(0);
 
+        if(Input.anyKeyDown &&
+            !Input.GetMouseButtonDown(0) &&
+            !Input.GetMouseButtonDown(1) &&
+            !Input.GetMouseButtonDown(2))
+        {
+            CollectionManager.Instance.UnlockItem("tog2");
+        }
+
         if (!press) return;
 
         if (state == State.Waiting)
         {
+            CollectionManager.Instance.UnlockItem("tog1");
             FinishGame(false);
         }
         else if (state == State.ReactionTime)
@@ -117,6 +126,7 @@ public class TapOnGreen : MonoBehaviour
             text.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
+            CollectionManager.Instance.UnlockItem("u6");
         }
         else
         {

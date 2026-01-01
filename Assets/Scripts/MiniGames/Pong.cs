@@ -16,6 +16,7 @@ public class Pong : MonoBehaviour
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float ballSpeed = 3.0f;
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject ball;
 
     private enum State { Play, Success, Fail }
     private State state = State.Play;
@@ -27,6 +28,7 @@ public class Pong : MonoBehaviour
     private Coroutine gameplayCoroutine;
     private Coroutine fadeTextCoroutine;
     private Coroutine fadeImagesCoroutine;
+    private int bounceCount = 0;
 
     void Start()
     {
@@ -54,6 +56,7 @@ public class Pong : MonoBehaviour
 
         Vector2 dir = new Vector2(Random.value < 0.5f ? -1f : 1f, Random.Range(0.2f, 1f)).normalized;
         rb.linearVelocity = dir * gameSpeed;
+        ball.AddComponent<BallCollisionProxy>().Init(this);
     }
 
     void Update()
@@ -78,6 +81,15 @@ public class Pong : MonoBehaviour
         position.x = Mathf.Clamp(position.x, areaMinX, areaMaxX);
 
         player.transform.position = position;
+    }
+
+    public void OnBounce()
+    {
+        bounceCount++;
+        if (bounceCount >= 4)
+        {
+            CollectionManager.Instance.UnlockItem("p1");
+        }
     }
 
     private IEnumerator FadeImage()
@@ -133,7 +145,13 @@ public class Pong : MonoBehaviour
             Debug.Log("Wygrana!");
             text.SetText("Przyœpieszamy!");
             state = State.Success;
+            if(bounceCount == 1)
+            {
+                CollectionManager.Instance.UnlockItem("p2");
+            }
             StartCoroutine(DelayedLevelUp());
+            CollectionManager.Instance.UnlockItem("u4");
+
         }
         else
         {
@@ -154,6 +172,23 @@ public class Pong : MonoBehaviour
         private void OnTriggerEnter2D(Collider2D collision)
         {
             pongGame.FinishGame(false);
+        }
+    }
+
+    private class BallCollisionProxy : MonoBehaviour
+    {
+        private Pong pongGame;
+        public void Init(Pong game)
+        {
+            pongGame = game;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if(collision.gameObject.CompareTag("Player"))
+            {
+                pongGame.OnBounce();
+            }
         }
     }
 }

@@ -10,8 +10,7 @@ public class CollectionIcon : MonoBehaviour,
     public Image iconImage;
     [SerializeField] private float lockedTransparency = 0.25f;
     public bool isUnlocked;
-    [TextArea]
-    public string tooltipDescription;
+    [TextArea] public string tooltipDescription;
 
     public void SetUnlocked(bool unlocked)
     {

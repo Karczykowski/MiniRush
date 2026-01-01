@@ -102,10 +102,20 @@ public class HitTheThing : MonoBehaviour
         if (hit == null)
         {
             FinishGame(false);
+            return;
         }
-        else if(hit.gameObject == dartboardGameObject)
+
+        if(hit.CompareTag("Center"))
+        {
+            CollectionManager.Instance.UnlockItem("htt1");
+            FinishGame(true);
+            return;
+        }
+        
+        if(hit.gameObject == dartboardGameObject)
         {
             FinishGame(true);
+            return;
         }
     }
 
@@ -136,6 +146,7 @@ public class HitTheThing : MonoBehaviour
     private IEnumerator Run()
     {
         yield return new WaitForSeconds(effectiveWaitTime);
+        CollectionManager.Instance.UnlockItem("htt2");
         FinishGame(false);
     }
 
@@ -161,6 +172,7 @@ public class HitTheThing : MonoBehaviour
             text.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
+            CollectionManager.Instance.UnlockItem("u3");
         }
         else
         {

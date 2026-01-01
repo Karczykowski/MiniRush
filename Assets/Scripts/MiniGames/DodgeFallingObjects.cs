@@ -31,6 +31,8 @@ public class DodgeFallingObjects : MonoBehaviour
     private Coroutine fadeImagesCoroutine;
     private List<GameObject> bullets = new List<GameObject>();
 
+    private bool didMove = false;
+
     void Start()
     {
         if(GameManager.Instance != null)
@@ -101,11 +103,23 @@ public class DodgeFallingObjects : MonoBehaviour
     private void Movement()
     {
         float moveX = Input.GetAxisRaw("Horizontal");
+        if(moveX != 0)
+        {
+            didMove = true;
+        }
 
         Vector3 position = player.transform.position;
+
+        float beforeClamp = position.x;
+
         position += new Vector3(moveX, 0f, 0f).normalized * playerSpeed * gameSpeed * Time.deltaTime;
 
         position.x = Mathf.Clamp(position.x, areaMinX, areaMaxX);
+
+        if(position.x != beforeClamp)
+        {
+            CollectionManager.Instance.UnlockItem("dfo1");
+        }
 
         player.transform.position = position;
     }
@@ -170,6 +184,11 @@ public class DodgeFallingObjects : MonoBehaviour
             text.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
+            CollectionManager.Instance.UnlockItem("u1");
+            if(didMove == false)
+            {
+                CollectionManager.Instance.UnlockItem("dfo2");
+            }
         }
         else
         {

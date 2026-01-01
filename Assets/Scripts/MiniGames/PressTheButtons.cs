@@ -59,6 +59,10 @@ public class PressTheButtons : MonoBehaviour
         }
         if (Input.anyKeyDown)
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                CollectionManager.Instance.UnlockItem("ptb2");
+            }
             if (Input.GetKeyDown(currentKey))
             {
                 timer = effectiveWaitTimeForKey;
@@ -73,6 +77,10 @@ public class PressTheButtons : MonoBehaviour
             }
             else
             {
+                if(points == numberOfKeys - 1)
+                {
+                    CollectionManager.Instance.UnlockItem("ptb1");
+                }
                 FinishGame(false);
             }
         }
@@ -137,6 +145,7 @@ public class PressTheButtons : MonoBehaviour
             winText.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
+            CollectionManager.Instance.UnlockItem("u5");
         }
         else
         {

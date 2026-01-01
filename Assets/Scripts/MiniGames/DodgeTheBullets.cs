@@ -25,6 +25,8 @@ public class DodgeTheBullets : MonoBehaviour
     float camHalfWidth;
     private float effectiveWaitTime = 5f;
     private float effectiveBulletSpawnDelay = 0.5f;
+    private float standTimer = 0f;
+    private Vector3 lastPosition;
     private Coroutine gameplayCoroutine;
     private Coroutine bulletCoroutine;
     private Coroutine fadeTextCoroutine;
@@ -67,6 +69,7 @@ public class DodgeTheBullets : MonoBehaviour
         }
 
         Movement();
+        CheckIdle();
     }
 
     private IEnumerator FadeImage()
@@ -106,12 +109,39 @@ public class DodgeTheBullets : MonoBehaviour
         float moveY = Input.GetAxisRaw("Vertical");
 
         Vector3 position = player.transform.position;
+
+        float beforeClampY = position.y;
+
         position += new Vector3(moveX, moveY, 0f).normalized * playerSpeed * gameSpeed * Time.deltaTime;
 
         position.x = Mathf.Clamp(position.x, areaMinX, areaMaxX);
         position.y = Mathf.Clamp(position.y, areaMinY, areaMaxY);
 
+        if (position.y != beforeClampY)
+        {
+            CollectionManager.Instance.UnlockItem("dtb1");
+        }
+
         player.transform.position = position;
+    }
+
+    private void CheckIdle() //for achievement
+    {
+        Vector3 position = player.transform.position;
+
+        if (position == lastPosition)
+        {
+            standTimer += Time.deltaTime;
+            if (standTimer >= 3f)
+            {
+                CollectionManager.Instance.UnlockItem("dtb2");
+            }
+        }
+        else
+        {
+            standTimer = 0f;
+            lastPosition = position;
+        }
     }
 
     private IEnumerator SpawnBullets()
@@ -196,6 +226,7 @@ public class DodgeTheBullets : MonoBehaviour
             text.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
+            CollectionManager.Instance.UnlockItem("u2");
         }
         else
         {

@@ -4,7 +4,6 @@ using UnityEngine;
 public class CollectionMenu : MonoBehaviour
 {
     public List<CollectionIcon> icons = new List<CollectionIcon>();
-    private HashSet<string> unlockedItems = new HashSet<string>();
 
     private void Awake()
     {
@@ -14,14 +13,8 @@ public class CollectionMenu : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        RefreshUI();
-    }
-
-    public void UnlockItem(string id)
-    {
-        unlockedItems.Add(id);
         RefreshUI();
     }
 
@@ -33,7 +26,7 @@ public class CollectionMenu : MonoBehaviour
             {
                 continue;
             }
-            icon.SetUnlocked(unlockedItems.Contains(icon.id));
+            icon.SetUnlocked(CollectionManager.unlockedItems.Contains(icon.id));
         }
     }
 }

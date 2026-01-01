@@ -90,6 +90,7 @@ public class MiniGameTemplate : MonoBehaviour
             text.SetText("Przyœpieszamy!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
+            CollectionManager.Instance.UnlockItem("");
         }
         else
         {
