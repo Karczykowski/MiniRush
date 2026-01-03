@@ -91,6 +91,7 @@ public class PauseManager : MonoBehaviour
     public void QuitToMenu()
     {
         Resume();
+        GameManager.Instance.menuState = 0;
         SceneManager.LoadScene("MainMenu");
     }
     

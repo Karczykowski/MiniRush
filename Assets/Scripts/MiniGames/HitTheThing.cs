@@ -159,6 +159,7 @@ public class HitTheThing : MonoBehaviour
     private IEnumerator DelayedReturnToMenu()
     {
         yield return new WaitForSeconds(GameManager.Instance.loseTimeDelay);
+        GameManager.Instance.menuState = 1;
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
@@ -168,15 +169,13 @@ public class HitTheThing : MonoBehaviour
         StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
-            Debug.Log("Wygrana!");
-            text.SetText("Przyœpieszamy!");
+            text.SetText("Wygrana!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
             CollectionManager.Instance.UnlockItem("u3");
         }
         else
         {
-            Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
             StartCoroutine(DelayedReturnToMenu());

@@ -107,7 +107,6 @@ public class PressTheButtons : MonoBehaviour
     private IEnumerator Run()
     {
         yield return new WaitForSeconds(effectiveWaitTime);
-        Debug.Log("Przegrana!");
         winText.SetText("Przegrana");
         state = State.Fail;
     }
@@ -132,6 +131,7 @@ public class PressTheButtons : MonoBehaviour
     private IEnumerator DelayedReturnToMenu()
     {
         yield return new WaitForSeconds(GameManager.Instance.loseTimeDelay);
+        GameManager.Instance.menuState = 1;
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
@@ -141,15 +141,13 @@ public class PressTheButtons : MonoBehaviour
         StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
-            Debug.Log("Wygrana!");
-            winText.SetText("Przyœpieszamy!");
+            winText.SetText("Wygrana!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
             CollectionManager.Instance.UnlockItem("u5");
         }
         else
         {
-            Debug.Log("Przegrana!");
             winText.SetText("Przegrana");
             state = State.Fail;
             StartCoroutine(DelayedReturnToMenu());

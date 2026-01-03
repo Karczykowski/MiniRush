@@ -131,7 +131,7 @@ public class Pong : MonoBehaviour
     private IEnumerator DelayedReturnToMenu()
     {
         yield return new WaitForSeconds(GameManager.Instance.loseTimeDelay);
-        Debug.Log("Powrót do menu");
+        GameManager.Instance.menuState = 1;
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
@@ -141,9 +141,7 @@ public class Pong : MonoBehaviour
         StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
-            
-            Debug.Log("Wygrana!");
-            text.SetText("Przyœpieszamy!");
+            text.SetText("Wygrana!");
             state = State.Success;
             if(bounceCount == 1)
             {
@@ -155,7 +153,6 @@ public class Pong : MonoBehaviour
         }
         else
         {
-            Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
             StartCoroutine(DelayedReturnToMenu());

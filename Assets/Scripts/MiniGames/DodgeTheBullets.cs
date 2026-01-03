@@ -207,6 +207,7 @@ public class DodgeTheBullets : MonoBehaviour
     private IEnumerator DelayedReturnToMenu()
     {
         yield return new WaitForSeconds(GameManager.Instance.loseTimeDelay);
+        GameManager.Instance.menuState = 1;
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
@@ -222,8 +223,7 @@ public class DodgeTheBullets : MonoBehaviour
         StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
-            Debug.Log("Wygrana!");
-            text.SetText("Przyœpieszamy!");
+            text.SetText("Wygrana!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
             CollectionManager.Instance.UnlockItem("u2");
@@ -231,7 +231,6 @@ public class DodgeTheBullets : MonoBehaviour
         else
         {
             StopCoroutine(bulletCoroutine);
-            Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
             StartCoroutine(DelayedReturnToMenu());

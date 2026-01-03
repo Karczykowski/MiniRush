@@ -34,7 +34,6 @@ public class TapOnGreen : MonoBehaviour
         minEffectiveTime = (1f - waitTimeVariation) * baseWaitTime;
         maxEffectiveTime = (1f + waitTimeVariation) * baseWaitTime;
         effectiveWaitTime = Random.Range(minEffectiveTime, maxEffectiveTime) / gameSpeed;
-        Debug.Log("Effective wait time for this round: " + effectiveWaitTime);
         reactionTime = reactionTime / gameSpeed;
 
         gameplayCoroutine = StartCoroutine(Run());
@@ -114,6 +113,7 @@ public class TapOnGreen : MonoBehaviour
     private IEnumerator DelayedReturnToMenu()
     {
         yield return new WaitForSeconds(GameManager.Instance.loseTimeDelay);
+        GameManager.Instance.menuState = 1;
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
@@ -122,15 +122,13 @@ public class TapOnGreen : MonoBehaviour
         StopCoroutine(gameplayCoroutine);
         if (win)
         {
-            Debug.Log("Wygrana!");
-            text.SetText("Przyœpieszamy!");
+            text.SetText("Wygrana!");
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
             CollectionManager.Instance.UnlockItem("u6");
         }
         else
         {
-            Debug.Log("Przegrana!");
             text.SetText("Przegrana");
             state = State.Fail;
             StartCoroutine(DelayedReturnToMenu());
