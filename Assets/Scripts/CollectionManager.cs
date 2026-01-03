@@ -50,5 +50,6 @@ public class CollectionManager : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         unlockedItems.Clear();
+        GameManager.Instance.clearPlayerPrefsForTesting();
     }
 }

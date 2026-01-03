@@ -4876,7 +4876,8 @@ MonoBehaviour:
   - 1.6
   - 2
   chaptersLengths: 050000000600000007000000080000000a000000
-  areChaptersUnlocked: 0100000000
+  areChaptersUnlocked: 0100000000000000000000000000000000000000
+  menuState: 0
 --- !u!4 &1015907239
 Transform:
   m_ObjectHideFlags: 0
@@ -8809,7 +8810,7 @@ MonoBehaviour:
   collectionCanvas: {fileID: 1841072112}
   creditsCanvas: {fileID: 967561366}
   chapterCanvas: {fileID: 1785619590}
-  winCanvas: {fileID: 0}
+  winCanvas: {fileID: 2047106356}
   chapterButtons:
   - {fileID: 1706145583}
   - {fileID: 345373075}

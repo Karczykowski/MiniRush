@@ -141,7 +141,14 @@ public class PressTheButtons : MonoBehaviour
         StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
-            winText.SetText("Wygrana!");
+            if(GameManager.Instance.isLastMiniGameInChapter())
+            {
+                winText.SetText("Kolejny Etap!");
+            }
+            else
+            {
+                winText.SetText("Wygrana!");
+            }
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
             CollectionManager.Instance.UnlockItem("u5");

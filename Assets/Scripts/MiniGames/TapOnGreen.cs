@@ -122,7 +122,14 @@ public class TapOnGreen : MonoBehaviour
         StopCoroutine(gameplayCoroutine);
         if (win)
         {
-            text.SetText("Wygrana!");
+            if (GameManager.Instance.isLastMiniGameInChapter())
+            {
+                text.SetText("Kolejny Etap!");
+            }
+            else
+            {
+                text.SetText("Wygrana!");
+            }
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
             CollectionManager.Instance.UnlockItem("u6");

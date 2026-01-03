@@ -78,7 +78,7 @@ public class MenuController : MonoBehaviour
         int buttonIndex = 0;
         foreach(GameObject button in chapterButtons)
         {
-            if (GameManager.Instance.areChaptersUnlocked[buttonIndex])
+            if (GameManager.Instance.areChaptersUnlocked[buttonIndex] == 1)
             {
                 button.GetComponent<UnityEngine.UI.Button>().interactable = true;
             }

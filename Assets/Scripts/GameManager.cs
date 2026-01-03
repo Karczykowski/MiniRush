@@ -51,9 +51,9 @@ public class GameManager : MonoBehaviour
         5, 6, 7, 8, 10
     };
 
-    public bool[] areChaptersUnlocked = new bool[]
+    public int[] areChaptersUnlocked = new int[]
     {
-        true, false, false, false, false
+        1, 0, 0, 0, 0
     };
 
     public int menuState = 0;
@@ -69,7 +69,9 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);  
+        DontDestroyOnLoad(gameObject);
+
+        Load();
     }
 
     public void OnMiniGameWin()
@@ -87,18 +89,22 @@ public class GameManager : MonoBehaviour
     {
         SetGameSpeed(chapterSpeeds[currentChapter - 1]);
         currentChapter++;
-        if(areChaptersUnlocked[currentChapter - 1] == false)
-        {
-            areChaptersUnlocked[currentChapter - 1] = true;
-        }
-        gamesWonInChapter = 0;
+
         if (currentChapter > chaptersLengths.Length)
         {
             SceneManager.LoadScene("MainMenu");
             menuState = 2;
             return;
         }
+
+        if(areChaptersUnlocked[currentChapter - 1] == 0)
+        {
+            areChaptersUnlocked[currentChapter - 1] = 1;
+        }
+
+        gamesWonInChapter = 0;
         SetChapter(currentChapter);
+        Save();
     }
 
     public void SetGameSpeed(float speed)
@@ -150,9 +156,42 @@ public class GameManager : MonoBehaviour
                 break;
 
             default:
-                Debug.Log("Blad, brak podanego poziomu");
+                Debug.Log("Brak podanego poziomu");
                 break;
         }
         return index;
+    }
+
+    void Save()
+    {
+        string data = string.Join(",", areChaptersUnlocked);
+
+        PlayerPrefs.SetString("UnlockedChapters", data);
+        PlayerPrefs.Save();
+    }
+
+    void Load()
+    {
+        string data = PlayerPrefs.GetString("UnlockedChapters", "");
+
+        if (!string.IsNullOrEmpty(data))
+        {
+            string[] items = data.Split(',');
+
+            for(int i = 0; i < items.Length; i++)
+            {
+                areChaptersUnlocked[i] = int.Parse(items[i]); 
+            }
+        }
+    }
+
+    public void clearPlayerPrefsForTesting()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
+    public bool isLastMiniGameInChapter()
+    {
+        return gamesWonInChapter + 1 >= chaptersLengths[currentChapter - 1];
     }
 }
