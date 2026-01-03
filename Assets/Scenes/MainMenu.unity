@@ -1741,7 +1741,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1492254205}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.47415096
+  m_Size: 0.46312425
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5168,7 +5168,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -7.026367, y: 1890.01}
+  m_SizeDelta: {x: -7.026367, y: 1935.01}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1055003455
 MonoBehaviour:
@@ -5192,10 +5192,11 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Autor gry: Mariusz Karczykowski\n---\nAssety:\n - Strzelnica: https://ci.itch.io/bar-games-graphics-pack\n
     - Postacie i elementy: https://ci.itch.io/puzzle-games-graphics-pack\n - Przyciski
-    menu: https://realvektyr.itch.io/casual-game-buttons-vol-02\n - Kolekcja: https://clockworkraven.itch.io/raven-fantasy-icons\n\nZasoby
-    wykorzystane na podstawie licencji zezwalaj\u0105cych na u\u017Cycie komercyjne.
-    Autorzy widniej\u0105 w podanych linkach.\n---\nIkonki:\n - Ikonka gry (srip):
-    https://www.flaticon.com/free-icons/cycle\n - Myszka (designvector10): https://www.flaticon.com/free-icons/mouse-clicker\n
+    menu: https://realvektyr.itch.io/casual-game-buttons-vol-02\n - Kolekcja: https://clockworkraven.itch.io/raven-fantasy-icons\n
+    - Czcionka: Autour One https://openfontlicense.org \n\nZasoby wykorzystane na
+    podstawie licencji zezwalaj\u0105cych na u\u017Cycie komercyjne. Autorzy widniej\u0105
+    w podanych linkach.\n---\nIkonki:\n - Ikonka gry (srip): https://www.flaticon.com/free-icons/cycle\n
+    - Myszka (designvector10): https://www.flaticon.com/free-icons/mouse-clicker\n
     - Klawiatura (Sebastian Belalcazar): https://www.flaticon.com/free-icons/keyboard\n
     - Zielone \u015Awiat\u0142o (customicondesign_1): https://www.flaticon.com/free-icons/trafficlight\n
     - Unik (Leremy): https://www.flaticon.com/free-icons/dodge\n - Kula (ARIF MIFTAHUL
@@ -6672,7 +6673,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2061905900}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.52584904}
+  m_AnchorMin: {x: 0, y: 0.5368757}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
