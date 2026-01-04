@@ -7351,7 +7351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1678620788
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8818,6 +8818,7 @@ MonoBehaviour:
   - {fileID: 1181684509}
   - {fileID: 323103090}
   - {fileID: 367962605}
+  exitGameButton: {fileID: 1599955368}
 --- !u!4 &1957194924
 Transform:
   m_ObjectHideFlags: 0

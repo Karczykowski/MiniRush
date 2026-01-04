@@ -10,7 +10,15 @@ public class MenuController : MonoBehaviour
     [SerializeField] GameObject chapterCanvas;
     [SerializeField] GameObject winCanvas;
     [SerializeField] List<GameObject> chapterButtons = new List<GameObject>();
+    [SerializeField] GameObject exitGameButton;
 
+    private void Awake()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        exitGameButton.SetActive(false);
+
+#endif
+    }
     private void OnEnable()
     {
         switch(GameManager.Instance.menuState)
