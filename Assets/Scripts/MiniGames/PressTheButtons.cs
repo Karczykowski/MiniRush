@@ -141,7 +141,7 @@ public class PressTheButtons : MonoBehaviour
         StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
-            if(GameManager.Instance.isLastMiniGameInChapter())
+            if(GameManager.Instance.IsLastMiniGameInChapter())
             {
                 winText.SetText("Kolejny Etap!");
             }
@@ -155,6 +155,7 @@ public class PressTheButtons : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.ResetGamesWonInChapter();
             winText.SetText("Przegrana");
             state = State.Fail;
             StartCoroutine(DelayedReturnToMenu());

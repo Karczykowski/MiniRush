@@ -122,7 +122,7 @@ public class TapOnGreen : MonoBehaviour
         StopCoroutine(gameplayCoroutine);
         if (win)
         {
-            if (GameManager.Instance.isLastMiniGameInChapter())
+            if (GameManager.Instance.IsLastMiniGameInChapter())
             {
                 text.SetText("Kolejny Etap!");
             }
@@ -136,6 +136,7 @@ public class TapOnGreen : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.ResetGamesWonInChapter();
             text.SetText("Przegrana");
             state = State.Fail;
             StartCoroutine(DelayedReturnToMenu());

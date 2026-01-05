@@ -223,13 +223,21 @@ public class DodgeTheBullets : MonoBehaviour
         StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
-            text.SetText("Wygrana!");
+            if (GameManager.Instance.IsLastMiniGameInChapter())
+            {
+                text.SetText("Kolejny Etap!");
+            }
+            else
+            {
+                text.SetText("Wygrana!");
+            }
             state = State.Success;
             StartCoroutine(DelayedLevelUp());
             CollectionManager.Instance.UnlockItem("u2");
         }
         else
         {
+            GameManager.Instance.ResetGamesWonInChapter();
             StopCoroutine(bulletCoroutine);
             text.SetText("Przegrana");
             state = State.Fail;

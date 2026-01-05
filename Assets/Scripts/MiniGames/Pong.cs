@@ -141,7 +141,14 @@ public class Pong : MonoBehaviour
         StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
-            text.SetText("Wygrana!");
+            if (GameManager.Instance.IsLastMiniGameInChapter())
+            {
+                text.SetText("Kolejny Etap!");
+            }
+            else
+            {
+                text.SetText("Wygrana!");
+            }
             state = State.Success;
             if(bounceCount == 1)
             {
@@ -153,6 +160,7 @@ public class Pong : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.ResetGamesWonInChapter();
             text.SetText("Przegrana");
             state = State.Fail;
             StartCoroutine(DelayedReturnToMenu());

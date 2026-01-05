@@ -169,7 +169,7 @@ public class HitTheThing : MonoBehaviour
         StopCoroutine(fadeImagesCoroutine);
         if (win)
         {
-            if (GameManager.Instance.isLastMiniGameInChapter())
+            if (GameManager.Instance.IsLastMiniGameInChapter())
             {
                 text.SetText("Kolejny Etap!");
             }
@@ -183,6 +183,7 @@ public class HitTheThing : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.ResetGamesWonInChapter();
             text.SetText("Przegrana");
             state = State.Fail;
             StartCoroutine(DelayedReturnToMenu());

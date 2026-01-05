@@ -30,13 +30,13 @@ public class CollectionManager : MonoBehaviour
 
     void Save()
     {
-        PlayerPrefs.SetString("UnlockeddItems", string.Join(",", unlockedItems));
+        PlayerPrefs.SetString("UnlockedItems", string.Join(",", unlockedItems));
         PlayerPrefs.Save();
     }
 
     void Load()
     {
-        string data = PlayerPrefs.GetString("UnlockeddItems", "");
+        string data = PlayerPrefs.GetString("UnlockedItems", "");
         if(!string.IsNullOrEmpty(data))
         {
             foreach (string item in data.Split(','))
@@ -44,12 +44,5 @@ public class CollectionManager : MonoBehaviour
                 unlockedItems.Add(item);
             }
         }
-    }
-
-    public void clearPlayerPrefsForTesting()
-    {
-        PlayerPrefs.DeleteAll();
-        unlockedItems.Clear();
-        GameManager.Instance.clearPlayerPrefsForTesting();
     }
 }

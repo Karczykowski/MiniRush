@@ -81,8 +81,11 @@ public class GameManager : MonoBehaviour
         {
             GoToNextChapter();
         }
-        GameSpeed += speedIncrease;
-        LoadRandomMiniGame();
+        else
+        {
+            GameSpeed += speedIncrease;
+            LoadRandomMiniGame();
+        } 
     }
 
     public void GoToNextChapter()
@@ -105,6 +108,10 @@ public class GameManager : MonoBehaviour
         gamesWonInChapter = 0;
         SetChapter(currentChapter);
         Save();
+
+        SceneManager.LoadScene("MainMenu");
+        menuState = 1;
+
     }
 
     public void SetGameSpeed(float speed)
@@ -185,13 +192,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void clearPlayerPrefsForTesting()
-    {
-        PlayerPrefs.DeleteAll();
-    }
-
-    public bool isLastMiniGameInChapter()
+    public bool IsLastMiniGameInChapter()
     {
         return gamesWonInChapter + 1 >= chaptersLengths[currentChapter - 1];
+    }
+
+    public void ResetGamesWonInChapter()
+    {
+        gamesWonInChapter = 0;
     }
 }
